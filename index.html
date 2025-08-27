@@ -133,7 +133,12 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ phone })
         });
+        console.log("Response status:", response.status);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
+        console.log("Received data:", data);
 
         if (data.pairCode) {
           messageDiv.style.color = 'green';
@@ -148,16 +153,16 @@
           submitBtn.disabled = false;
         }
       } catch (error) {
+        console.error("Fetch error:", error);
         messageDiv.style.color = 'red';
         messageDiv.textContent = 'Error connecting to the server.';
         submitBtn.disabled = false;
       }
     }
 
-    // Add pairing code input & button dynamically
     function addPairingInput() {
       const container = document.querySelector('.container');
-      if(document.getElementById('pairCodeInput')) return; // prevent duplicates
+      if (document.getElementById('pairCodeInput')) return;
 
       const inputLabel = document.createElement('label');
       inputLabel.setAttribute('for', 'pairCodeInput');
@@ -183,13 +188,14 @@
       const pairCode = pairCodeInput.value.trim();
       const messageDiv = document.getElementById('message');
       const buttons = document.querySelectorAll('button');
+
       if (!pairCode.match(/^\d{6}$/)) {
         messageDiv.style.color = 'red';
         messageDiv.textContent = 'Pairing code must be a 6-digit number.';
         return;
       }
 
-      buttons.forEach(btn => btn.disabled = true);
+      buttons.forEach(btn => (btn.disabled = true));
       messageDiv.style.color = '#333';
       messageDiv.textContent = 'Validating pairing code...';
 
@@ -199,20 +205,26 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ pairCode })
         });
+        console.log("Validate response status:", response.status);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
+        console.log("Validate response data:", data);
 
-        if(data.success) {
+        if (data.success) {
           messageDiv.style.color = 'green';
           messageDiv.textContent = 'Bot successfully paired and connected!';
         } else {
           messageDiv.style.color = 'red';
           messageDiv.textContent = data.error || 'Invalid or expired pairing code.';
         }
-      } catch(error) {
+      } catch (error) {
+        console.error("Validate fetch error:", error);
         messageDiv.style.color = 'red';
         messageDiv.textContent = 'Error validating pairing code.';
       } finally {
-        buttons.forEach(btn => btn.disabled = false);
+        buttons.forEach(btn => (btn.disabled = false));
       }
     }
   </script>
