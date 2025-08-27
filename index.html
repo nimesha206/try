@@ -128,7 +128,7 @@
       messageDiv.textContent = 'Generating pairing code...';
 
       try {
-        const response = await fetch('http://localhost:3000/generatePairCode', {
+        const response = await fetch('/api/generatePairCode', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ phone })
@@ -194,7 +194,7 @@
       messageDiv.textContent = 'Validating pairing code...';
 
       try {
-        const response = await fetch('http://localhost:3000/validatePairCode', {
+        const response = await fetch('/api/validatePairCode', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ pairCode })
