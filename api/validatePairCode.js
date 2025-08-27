@@ -1,4 +1,6 @@
-import { sessions } from './generatePairingCord.js';
+// /api/validatePairCode.js
+import { sessions } from './generatePairCode.js';
+import { setPairedPhone } from '../../bot.js';   // Adjust relative path for your project structure
 
 export default function handler(req, res) {
   if (req.method !== 'POST') {
@@ -6,14 +8,11 @@ export default function handler(req, res) {
   }
 
   const { pairCode } = req.body;
-
   if (!pairCode) {
     return res.status(400).json({ error: 'Pairing code is required' });
   }
 
-  // Extract numeric part if formatted e.g. "nimesha~123456"
   const numericCode = pairCode.includes('~') ? pairCode.split('~')[1] : pairCode;
-
   const session = sessions.get(numericCode);
 
   if (!session) {
@@ -26,6 +25,8 @@ export default function handler(req, res) {
   }
 
   sessions.delete(numericCode);
+
+  setPairedPhone(session.phone);
 
   res.status(200).json({ success: true, phone: session.phone });
 }
