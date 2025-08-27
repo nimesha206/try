@@ -1,3 +1,4 @@
+// bot.js
 import makeWASocket, { useSingleFileAuthState, DisconnectReason } from '@adiwajshing/baileys';
 import P from 'pino';
 
