@@ -1,10 +1,11 @@
-const { default: makeWASocket, useSingleFileAuthState, DisconnectReason } = require('@adiwajshing/baileys');
-const P = require('pino');
+import makeWASocket, { useSingleFileAuthState, DisconnectReason } from '@adiwajshing/baileys';
+import P from 'pino';
+
 const { state, saveState } = useSingleFileAuthState('./auth_info.json');
 
 let pairedPhone = null;
 
-function setPairedPhone(phone) {
+export function setPairedPhone(phone) {
   pairedPhone = phone;
   console.log('Paired phone set to', phone);
 }
@@ -13,7 +14,7 @@ async function startBot() {
   const sock = makeWASocket({
     logger: P({ level: 'silent' }),
     printQRInTerminal: true,
-    auth: state
+    auth: state,
   });
 
   sock.ev.on('creds.update', saveState);
@@ -30,7 +31,7 @@ async function startBot() {
       if (text.toLowerCase().includes('hello')) reply = 'Hello! How can I help?';
       else if (text.toLowerCase().includes('how are you')) reply = "I'm fine, thank you!";
       else if (text.toLowerCase().includes('bye')) reply = 'Goodbye! Have a nice day!';
-      
+
       await sock.sendMessage(from, { text: reply });
     }
   });
@@ -48,5 +49,3 @@ async function startBot() {
 }
 
 startBot();
-
-module.exports = { setPairedPhone };
