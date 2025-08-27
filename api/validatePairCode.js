@@ -1,6 +1,6 @@
 // /api/validatePairCode.js
 import { sessions } from './generatePairCode.js';
-import { setPairedPhone } from '../../bot.js';   // Adjust relative path for your project structure
+import { setPairedPhone } from '../bot.js';  // Adjust path as per your folder structure
 
 export default function handler(req, res) {
   if (req.method !== 'POST') {
