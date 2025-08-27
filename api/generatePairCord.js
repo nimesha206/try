@@ -4,20 +4,19 @@ import crypto from 'crypto';
 const sessions = new Map();
 
 export default function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if(req.method !== 'POST'){
+    return res.status(405).json({error: 'Method not allowed'});
   }
-
-  const { phone } = req.body;
-  if (!phone) {
-    return res.status(400).json({ error: 'Phone number is required' });
+  
+  const {phone} = req.body;
+  if(!phone){
+    return res.status(400).json({error: 'Phone number required'});
   }
 
   const pairCode = crypto.randomInt(100000, 999999).toString();
+  sessions.set(pairCode, {phone, expires: Date.now() + 5*60*1000});
 
-  sessions.set(pairCode, { phone, expires: Date.now() + 5 * 60 * 1000 });
-
-  res.status(200).json({ pairCode: `nimesha~${pairCode}` });
+  res.status(200).json({pairCode: `nimesha~${pairCode}`});
 }
 
 export { sessions };
