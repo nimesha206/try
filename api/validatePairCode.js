@@ -1,26 +1,26 @@
-import { sessions, setPairedPhone } from './generatePairCode';
+import { sessions } from './generatePairCode';
+
+let pairedPhone = null;
 
 export default function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { pairCode } = req.body;
-
-  if (!pairCode || !sessions[pairCode]) {
-    return res.status(400).json({ error: 'Invalid pair code' });
-  }
+  if (!pairCode || !sessions[pairCode]) return res.status(400).json({ error: 'Invalid pairing code' });
 
   if (sessions[pairCode].expires < Date.now()) {
     delete sessions[pairCode];
-    return res.status(400).json({ error: 'Pair code expired' });
+    return res.status(400).json({ error: 'Pairing code expired' });
   }
 
-  const session = sessions[pairCode];
-
-  setPairedPhone(session.phone);
+  pairedPhone = sessions[pairCode].phone;
 
   delete sessions[pairCode];
 
-  res.status(200).json({ success: true, phone: session.phone });
+  res.status(200).json({ success: true, phone: pairedPhone });
+}
+
+// Export setter for bot.js if needed
+export function getPairedPhone() {
+  return pairedPhone;
 }
