@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "@adiwajshing/baileys": "latest",
     "express": "^4.18.2",
