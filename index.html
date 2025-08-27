@@ -133,12 +133,10 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ phone })
         });
-        console.log("Response status:", response.status);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("Received data:", data);
 
         if (data.pairCode) {
           messageDiv.style.color = 'green';
@@ -173,7 +171,7 @@
       pairCodeInput.type = 'text';
       pairCodeInput.id = 'pairCodeInput';
       pairCodeInput.placeholder = 'Enter the pairing code here';
-      pairCodeInput.maxLength = 6;
+      pairCodeInput.maxLength = 12;
       pairCodeInput.style.marginBottom = '20px';
       container.appendChild(pairCodeInput);
 
@@ -189,9 +187,9 @@
       const messageDiv = document.getElementById('message');
       const buttons = document.querySelectorAll('button');
 
-      if (!pairCode.match(/^\d{6}$/)) {
+      if (!pairCode.match(/^nimesha~\d{6}$/)) {
         messageDiv.style.color = 'red';
-        messageDiv.textContent = 'Pairing code must be a 6-digit number.';
+        messageDiv.textContent = 'Pairing code must be in format "nimesha~123456".';
         return;
       }
 
@@ -205,12 +203,10 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ pairCode })
         });
-        console.log("Validate response status:", response.status);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("Validate response data:", data);
 
         if (data.success) {
           messageDiv.style.color = 'green';
