@@ -1,0 +1,9 @@
+{
+  "name": "mini-whatsapp-bot",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "dependencies": {
+    "@adiwajshing/baileys": "^6.3.7",
+    "pino": "^8.14.1"
+  }
+}

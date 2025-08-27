@@ -1,0 +1,6 @@
+/your-project-folder
+|-- index.html               # Frontend pairing interface
+|-- pairing-server.js        # Pair code server
+|-- bot.js                   # WhatsApp bot main logic
+|-- auth_info.json           # Baileys session file (auto gen)
+|-- package.json             # Node.js dependencies
